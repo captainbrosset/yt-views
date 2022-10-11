@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video views</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .chart {
+        width: 80vmin;
+        height: 80vmin;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="chart"></canvas>
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"
+      integrity="sha256-+8RZJua0aEWg+QVVKg4LEzEEm/8RFez5Tb4JBNiV5xA="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      async function getData() {
+        const response = await fetch("./VIEWS.json");
+        const data = await response.json();
+        return data;
+      }
+
+      function formatDate(date) {
+        const year = date.getFullYear();
+
+        const month = date.getMonth() + 1;
+        const monthStr = month.toString().padStart(2, "0");
+
+        const day = date.getDate();
+        const dayStr = day.toString().padStart(2, "0");
+
+        return `${year}-${monthStr}-${dayStr}`;
+      }
+
+      function getRandomColor() {
+        const letters = "0123456789ABCDEF";
+        let color = "#";
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      // On document load.
+      document.addEventListener("DOMContentLoaded", async () => {
+        const data = await getData();
+
+        // We need a consolidated list of dates, for the labels.
+        const dates = new Set();
+        for (const id in data) {
+          for (const entry of data[id].views) {
+            const formatted = formatDate(new Date(entry.date));
+            entry.date = formatted;
+            dates.add(formatted);
+          }
+        }
+        const labels = [...dates];
+
+        // Prepare the datasets, one for each video.
+        const datasets = [];
+        for (const id in data) {
+          const videoData = [];
+
+          // Iterate over the consolidated dates array, to match the dates.
+          for (const date of dates) {
+            const entry = data[id].views.find((entry) => entry.date === date);
+            videoData.push(entry ? entry.views : undefined);
+          }
+
+          const color = getRandomColor();
+          datasets.push({
+            label: data[id].name,
+            borderColor: color,
+            borderWidth: 2,
+            pointBackgroundColor: color,
+            pointRadius: 2,
+            pointBorderWidth: 0,
+            pointHitRadius: 5,
+            data: videoData
+          });
+        }
+
+        const ctx = document.querySelector(".chart").getContext("2d");
+        const chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels,
+            datasets,
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
