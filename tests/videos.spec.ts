@@ -4,10 +4,11 @@ import fs from 'fs/promises';
 const YT_URL_ROOT = 'https://www.youtube.com/watch?v=';
 
 const VIDEO_URLS = [
-  { id: 'kv6Q8a9bsbA', name: 'whats new 101' },
-  { id: 'JY6DfhSdr_A', name: 'whats new 102' },
-  { id: 'hdrR0QwXpuc', name: 'memory/perf debugging' },
-  { id: 'aa0C6BRdaPA', name: 'whats new 103' },
+  // Stop recording views for old videos.
+  // { id: 'kv6Q8a9bsbA', name: 'whats new 101' },
+  // { id: 'JY6DfhSdr_A', name: 'whats new 102' },
+  // { id: 'hdrR0QwXpuc', name: 'memory/perf debugging' },
+  // { id: 'aa0C6BRdaPA', name: 'whats new 103' },
   { id: '0_ZprFX8x0I', name: 'whats new 104' },
   { id: 'ayemJLeE55c', name: 'learn devtools ui' },
   { id: 'h0XJH_iLoUk', name: 'whats new 105' },

@@ -12,19 +12,64 @@
         padding: 0;
         height: 100%;
         overflow: hidden;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
       }
       body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: 1fr;
+        place-content: center;
       }
       .chart {
-        width: 80vmin;
-        height: 80vmin;
+        width: 100%;
+        height: 100%;
+      }
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .legend {
+        display: flex;
+        justify-content: center;
+      }
+      .legend li {
+        padding: .25rem;
+      }
+      .legend li:hover {
+        background: rgb(255, 245, 190);
+      }
+      .legend a {
+        color: currentColor;
+        text-align: center;
+      }
+      .legend li::before {
+        content: "";
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+        background-image: radial-gradient(
+            circle,
+            currentColor 2px,
+            transparent 0
+          ),
+          linear-gradient(
+            to bottom,
+            transparent 0 calc(50% - 1px),
+            currentColor calc(50% - 1px) calc(50% + 1px),
+            transparent 0
+          );
+        background-position: center, 0 0;
       }
     </style>
   </head>
   <body>
+    <ul class="legend"></ul>
     <canvas class="chart"></canvas>
     <script
       src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"
@@ -32,6 +77,8 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      const legend = document.querySelector(".legend");
+
       async function getData() {
         const response = await fetch("./VIEWS.json");
         const data = await response.json();
@@ -50,13 +97,23 @@
         return `${year}-${monthStr}-${dayStr}`;
       }
 
+      // Get a random dark color that will work against a white background.
       function getRandomColor() {
-        const letters = "0123456789ABCDEF";
-        let color = "#";
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+        const hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 100%, 20%)`;
+      }
+
+      function appendLegendItem(legend, label, url, color) {
+        const item = document.createElement("li");
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.innerText = label;
+        link.setAttribute("target", "_blank");
+        item.appendChild(link);
+
+        item.style.color = color;
+        legend.appendChild(item);
       }
 
       // On document load.
@@ -88,14 +145,16 @@
           const color = getRandomColor();
           datasets.push({
             label: data[id].name,
+            originalColor: color,
             borderColor: color,
             borderWidth: 2,
-            pointBackgroundColor: color,
-            pointRadius: 2,
+            pointRadius: 0,
             pointBorderWidth: 0,
             pointHitRadius: 5,
-            data: videoData
+            data: videoData,
           });
+
+          appendLegendItem(legend, data[id].name, data[id].url, color);
         }
 
         const ctx = document.querySelector(".chart").getContext("2d");
@@ -111,7 +170,38 @@
                 beginAtZero: true,
               },
             },
+            plugins: {
+              legend: false,
+            },
           },
+        });
+
+        addEventListener("mouseover", (e) => {
+          const legendItem = e.target.closest(".legend li");
+          if (!legendItem) return;
+          const index = [...legendItem.parentElement.children].indexOf(
+            legendItem
+          );
+
+          chart.data.datasets.forEach((config, datasetIndex) => {
+            config.borderColor = config.originalColor;
+
+            if (datasetIndex !== index) {
+              config.borderColor = "#ccc";
+            }
+          });
+
+          chart.update("none");
+        });
+
+        addEventListener("mouseout", (e) => {
+          const legendItem = e.target.closest(".legend li");
+          if (!legendItem) return;
+
+          chart.data.datasets.forEach((config) => {
+            config.borderColor = config.originalColor;
+          });
+          chart.update("none");
         });
       });
     </script>
