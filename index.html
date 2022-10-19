@@ -82,6 +82,11 @@
       async function getData() {
         const response = await fetch("./VIEWS.json");
         const data = await response.json();
+
+        for (const id in data) {
+          data[id].views = data[id].views.sort((a, b) => a.date - b.date);
+        }
+
         return data;
       }
 
