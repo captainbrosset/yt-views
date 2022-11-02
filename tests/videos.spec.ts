@@ -10,8 +10,8 @@ const VIDEO_URLS = [
   // { id: 'hdrR0QwXpuc', name: 'memory/perf debugging' },
   // { id: 'aa0C6BRdaPA', name: 'whats new 103' },
   // { id: '0_ZprFX8x0I', name: 'whats new 104' },
+  // { id: 'h0XJH_iLoUk', name: 'whats new 105' },
   { id: 'ayemJLeE55c', name: 'learn devtools ui' },
-  { id: 'h0XJH_iLoUk', name: 'whats new 105' },
   { id: 'LJxjFo4DuA0', name: 'whats new 106' },
   { id: 'niG_Ck6E5L8', name: 'Network crash course' },
 ];
