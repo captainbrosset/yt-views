@@ -12,9 +12,9 @@ const VIDEO_URLS = [
   // { id: '0_ZprFX8x0I', name: 'whats new 104' },
   // { id: 'h0XJH_iLoUk', name: 'whats new 105' },
   { id: 'ayemJLeE55c', name: 'learn devtools ui' },
-  { id: 'LJxjFo4DuA0', name: 'whats new 106' },
+  // { id: 'LJxjFo4DuA0', name: 'whats new 106' },
   { id: 'niG_Ck6E5L8', name: 'Network crash course' },
-  // { id: 'QcAnrbfJN0s', name: 'whats new 107' },
+  { id: 'QcAnrbfJN0s', name: 'whats new 107' },
   { id: '2fuTHag4EOw', name: 'whats new 108' },
 ];
 
