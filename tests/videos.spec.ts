@@ -14,7 +14,8 @@ const VIDEO_URLS = [
   { id: 'ayemJLeE55c', name: 'learn devtools ui' },
   { id: 'LJxjFo4DuA0', name: 'whats new 106' },
   { id: 'niG_Ck6E5L8', name: 'Network crash course' },
-  { id: 'QcAnrbfJN0s', name: 'whats new 107' },
+  // { id: 'QcAnrbfJN0s', name: 'whats new 107' },
+  { id: '2fuTHag4EOw', name: 'whats new 108' },
 ];
 
 
