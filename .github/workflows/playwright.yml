@@ -26,6 +26,7 @@ jobs:
         retention-days: 30
     - name: Check in the file changes
       run: |
-        git config user.name "GitHub Actions Bot"
+        git config --global user.email "patrick.brosset@microsoft.com"
+        git config --global user.name "GitHub Actions Bot"
         git commit -a -m "Daily video views retrieval"
         git push origin main
