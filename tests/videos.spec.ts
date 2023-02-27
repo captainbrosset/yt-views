@@ -17,7 +17,7 @@ const VIDEO_URLS = [
   // { id: 'QcAnrbfJN0s', name: 'whats new 107' },
   // { id: '2fuTHag4EOw', name: 'OLD whats new 108' },
   // { id: 'KmGXnsSCtI4', name: 'whats new 108' },
-  { id: 'b-q-PLmO-ns', name: 'whats new 109' },
+  // { id: 'b-q-PLmO-ns', name: 'whats new 109' },
   { id: 'qrzq3bN_1BY', name: 'whats new 110' },
 ];
 
